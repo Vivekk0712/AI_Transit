@@ -18,28 +18,33 @@ const Signup = () => {
   };
 
   return (
-    <div>
-      <h2>Signup</h2>
-      <form onSubmit={handleSignup}>
-        <div>
-          <label>Email</label>
-          <input
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
-        </div>
-        <div>
-          <label>Password</label>
-          <input
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
-        </div>
-        <button type="submit">Signup</button>
-      </form>
-      {message && <p>{message}</p>}
+    <div className="page">
+      <h1 className="fade-in">Create your account</h1>
+      <div className="card">
+        <form className="form" onSubmit={handleSignup}>
+          <div>
+            <label>Email</label>
+            <input
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
+          </div>
+          <div>
+            <label>Password</label>
+            <input
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
+          </div>
+          <div className="actions">
+            <button type="submit" className="btn btn-primary">Signup</button>
+            <button type="button" className="btn btn-ghost" onClick={() => { setEmail(''); setPassword(''); }}>Clear</button>
+          </div>
+        </form>
+        {message && <p className="mt-2" style={{ color: '#ffb4b4' }}>{message}</p>}
+      </div>
     </div>
   );
 };
