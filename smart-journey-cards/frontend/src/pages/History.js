@@ -24,14 +24,14 @@ const History = () => {
   }, []);
 
   return (
-    <div>
-      <h2>Travel History</h2>
-      {message && <p>{message}</p>}
-      <div>
+    <div className="page">
+      <h1 className="fade-in">Travel History</h1>
+      {message && <p className="mt-2" style={{ color: '#ffb4b4' }}>{message}</p>}
+      <div className="grid cols-2">
         {history.map((item) => (
-          <div key={item._id}>
+          <div key={item._id} className="card">
+            <h3>{item.selectedOption.mode}</h3>
             <p>Query: {item.query}</p>
-            <p>Selected: {item.selectedOption.mode}</p>
             <p>Date: {new Date(item.timestamp).toLocaleDateString()}</p>
           </div>
         ))}

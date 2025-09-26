@@ -1,0 +1,232 @@
+/* Modern, attractive base theme – no component code changes required */
+
+/* Design tokens */
+:root {
+  --bg: #0b1220;
+  --bg-elev: #121a2b;
+  --card: #141e33;
+  --muted: #8ea0bf;
+  --text: #e6eefc;
+  --primary: #6ea8ff;
+  --primary-600: #5598ff;
+  --primary-700: #3a84ff;
+  --accent: #7ef6e9;
+  --danger: #ff6b6b;
+  --shadow: 0 10px 30px rgba(0,0,0,0.35);
+  --radius: 14px;
+  --radius-sm: 10px;
+  --radius-lg: 18px;
+  --gap: 16px;
+  --gap-lg: 24px;
+  --gap-xl: 32px;
+}
+
+/* Global reset + layout rhythm */
+* { box-sizing: border-box; }
+html, body, #root { height: 100%; }
+body {
+  margin: 0;
+  font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Inter, "Helvetica Neue", Arial, "Apple Color Emoji", "Segoe UI Emoji";
+  color: var(--text);
+  background:
+    radial-gradient(1200px 800px at 20% -10%, rgba(110,168,255,0.18), transparent 60%),
+    radial-gradient(1000px 800px at 120% 0%, rgba(126,246,233,0.10), transparent 60%),
+    radial-gradient(800px 600px at 50% 120%, rgba(58,132,255,0.12), transparent 60%),
+    var(--bg);
+  line-height: 1.5;
+  letter-spacing: 0.2px;
+}
+
+/* Containers */
+.container, .page, .wrap, main {
+  max-width: 1040px;
+  margin: 0 auto;
+  padding: calc(var(--gap-lg) + 6px) var(--gap-lg);
+}
+
+/* Headings */
+h1, h2, h3 {
+  margin: 0 0 var(--gap);
+  line-height: 1.15;
+  letter-spacing: 0.3px;
+}
+h1 {
+  font-size: clamp(28px, 4vw, 40px);
+  font-weight: 800;
+  background: linear-gradient(180deg, var(--text), #cfe0ff 60%, #9dbbff);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+h2 { font-size: clamp(22px, 3vw, 28px); font-weight: 700; }
+h3 { font-size: clamp(18px, 2.4vw, 22px); font-weight: 600; color: #d6e4ff; }
+
+/* Card */
+.card {
+  background: linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.02)) , var(--card);
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: var(--radius);
+  padding: var(--gap-xl);
+  box-shadow: var(--shadow);
+  backdrop-filter: blur(8px);
+  transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease;
+}
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 16px 40px rgba(0,0,0,0.45);
+  border-color: rgba(126,246,233,0.25);
+}
+
+/* Grid helpers */
+.grid {
+  display: grid;
+  gap: var(--gap-lg);
+}
+.grid.cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.grid.cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+@media (max-width: 900px) {
+  .grid.cols-2, .grid.cols-3 { grid-template-columns: 1fr; }
+}
+
+/* Inputs */
+input, select, textarea {
+  width: 100%;
+  padding: 12px 14px;
+  color: var(--text);
+  background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01)), var(--bg-elev);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: var(--radius-sm);
+  outline: none;
+  transition: border-color .2s ease, box-shadow .2s ease, background .2s ease;
+}
+input::placeholder, textarea::placeholder { color: var(--muted); }
+input:focus, select:focus, textarea:focus {
+  border-color: rgba(110,168,255,0.45);
+  box-shadow: 0 0 0 6px rgba(110,168,255,0.15);
+}
+
+/* Buttons */
+button, .btn {
+  -webkit-tap-highlight-color: transparent;
+  appearance: none;
+  border: none;
+  cursor: pointer;
+  color: #0b1325;
+  background: linear-gradient(180deg, var(--primary), var(--primary-600));
+  border-radius: var(--radius);
+  padding: 12px 18px;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+  box-shadow: 0 10px 24px rgba(62,112,214,0.35);
+  transition: transform .12s ease, box-shadow .12s ease, background .2s ease, filter .2s ease;
+}
+button:hover, .btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 14px 30px rgba(62,112,214,0.45);
+  filter: brightness(1.03);
+}
+button:active, .btn:active { transform: translateY(0); }
+.btn-primary { background: linear-gradient(180deg, var(--primary-600), var(--primary-700)); color: #06122a; }
+.btn-ghost {
+  background: transparent;
+  color: var(--text);
+  border: 1px solid rgba(255,255,255,0.14);
+  box-shadow: none;
+}
+.btn-danger { background: linear-gradient(180deg, var(--danger), #f24646); color: #1c0f10; }
+
+/* Links */
+a {
+  color: var(--accent);
+  text-decoration: none;
+  position: relative;
+}
+a::after {
+  content: "";
+  position: absolute;
+  left: 0; bottom: -2px;
+  width: 100%; height: 2px;
+  background: linear-gradient(90deg, var(--accent), transparent 70%);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform .2s ease;
+}
+a:hover::after { transform: scaleX(1); }
+
+/* Forms grouping */
+.form {
+  display: grid;
+  gap: var(--gap);
+}
+.form .actions {
+  display: flex;
+  gap: var(--gap);
+  align-items: center;
+  justify-content: flex-start;
+}
+
+/* Nav/header/footer candidates */
+.header, nav, .topbar {
+  position: sticky;
+  top: 0;
+  z-index: 5;
+  background: rgba(9, 15, 28, 0.7);
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+  backdrop-filter: blur(10px);
+}
+.topbar-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--gap);
+  max-width: 1040px;
+  margin: 0 auto;
+  padding: 12px var(--gap-lg);
+}
+.nav-links { display: flex; gap: 14px; }
+.nav-links a { color: var(--text); }
+.nav-links a.active { color: var(--accent); }
+
+.footer {
+  margin-top: var(--gap-xl);
+  color: var(--muted);
+  border-top: 1px solid rgba(255,255,255,0.06);
+  padding: var(--gap-lg) 0;
+}
+
+/* Tables */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background: var(--card);
+  border-radius: var(--radius);
+  overflow: hidden;
+  box-shadow: var(--shadow);
+}
+th, td {
+  text-align: left;
+  padding: 12px 14px;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+thead th {
+  background: rgba(255,255,255,0.04);
+  font-weight: 700;
+  color: #d6e4ff;
+}
+
+/* Subtle animations */
+.fade-in {
+  opacity: 0;
+  transform: translateY(6px);
+  animation: fadeIn .4s ease forwards;
+}
+@keyframes fadeIn {
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Utility spacing (optional) */
+.mt-1 { margin-top: 8px; } .mt-2 { margin-top: 12px; } .mt-3 { margin-top: 20px; }
+.mb-1 { margin-bottom: 8px; } .mb-2 { margin-bottom: 12px; } .mb-3 { margin-bottom: 20px; }
+.p-1 { padding: 8px; } .p-2 { padding: 12px; } .p-3 { padding: 20px; }
+
+
