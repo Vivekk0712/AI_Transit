@@ -1,0 +1,131 @@
+.landing-page {
+  display: flex;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.form-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: #f0f2f5;
+  animation: slide-in 1s ease-in-out;
+}
+
+.animation-container {
+  flex: 1;
+  position: relative;
+  background: linear-gradient(45deg, #6a11cb, #2575fc);
+  overflow: hidden;
+}
+
+.form-toggle {
+  display: flex;
+  margin-bottom: 2rem;
+}
+
+.form-toggle button {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  color: #aaa;
+  transition: color 0.3s;
+}
+
+.form-toggle button.active {
+  color: #333;
+  border-bottom: 2px solid #2575fc;
+}
+
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  width: 300px;
+}
+
+.auth-form h2 {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.auth-form input {
+  padding: 0.8rem;
+  margin-bottom: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.auth-form button {
+  padding: 0.8rem;
+  background-color: #2575fc;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.auth-form button:hover {
+  background-color: #6a11cb;
+}
+
+.message {
+  color: red;
+  text-align: center;
+  margin-top: 1rem;
+}
+
+@keyframes slide-in {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+.shape {
+  position: absolute;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.1);
+  animation: float 10s infinite linear;
+}
+
+.shape1 {
+  width: 100px;
+  height: 100px;
+  top: 10%;
+  left: 10%;
+}
+
+.shape2 {
+  width: 50px;
+  height: 50px;
+  top: 50%;
+  left: 60%;
+  animation-duration: 15s;
+}
+
+.shape3 {
+  width: 150px;
+  height: 150px;
+  top: 70%;
+  left: 20%;
+  animation-duration: 12s;
+}
+
+@keyframes float {
+  0% {
+    transform: translateY(0) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-20px) rotate(180deg);
+  }
+  100% {
+    transform: translateY(0) rotate(360deg);
+  }
+}

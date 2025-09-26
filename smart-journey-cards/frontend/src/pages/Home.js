@@ -1,11 +1,21 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import TravelService from '../services/TravelService';
+import HistoryService from '../services/HistoryService';
+import SpeechService from '../services/SpeechService'; // New import
+import { jwtDecode } from 'jwt-decode';
 
 const Home = () => {
   const [query, setQuery] = useState('');
   const [recommendations, setRecommendations] = useState([]);
   const [message, setMessage] = useState('');
+  const [source, setSource] = useState('');
+  const [destination, setDestination] = useState('');
+  const [selectedCard, setSelectedCard] = useState(null);
+  const [parsedQuery, setParsedQuery] = useState(null);
+  const [isRecording, setIsRecording] = useState(false);
+  const mediaRecorderRef = useRef(null);
+  const audioChunksRef = useRef([]);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -15,12 +25,57 @@ const Home = () => {
     }
   }, [navigate]);
 
+  const startRecording = async () => {
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      mediaRecorderRef.current = new MediaRecorder(stream, { mimeType: 'audio/webm' });
+      audioChunksRef.current = [];
+
+      mediaRecorderRef.current.ondataavailable = (event) => {
+        audioChunksRef.current.push(event.data);
+      };
+
+      mediaRecorderRef.current.onstop = async () => {
+        const audioBlob = new Blob(audioChunksRef.current, { type: 'audio/webm' });
+        const formData = new FormData();
+        formData.append('audio', audioBlob, 'audio.webm');
+
+        try {
+          const token = localStorage.getItem('token');
+          const response = await SpeechService.transcribeAudio(formData, token);
+          setQuery(response.data.text);
+        } catch (error) {
+          console.error('Error transcribing audio:', error);
+          setMessage('Error transcribing audio.');
+        }
+      };
+
+      mediaRecorderRef.current.start();
+      setIsRecording(true);
+      setMessage('Recording...');
+    } catch (error) {
+      console.error('Error accessing microphone:', error);
+      setMessage(`Error accessing microphone. Please ensure it's enabled.`);
+    }
+  };
+
+  const stopRecording = () => {
+    if (mediaRecorderRef.current && isRecording) {
+      mediaRecorderRef.current.stop();
+      setIsRecording(false);
+      setMessage('Processing audio...');
+    }
+  };
+
   const handleQuery = async (e) => {
     e.preventDefault();
     const token = localStorage.getItem('token');
     try {
       const response = await TravelService.query(query, token);
       const { source, destination, intent } = response.data;
+      setSource(source);
+      setDestination(destination);
+      setParsedQuery(response.data);
       const recommendationsResponse = await TravelService.recommend(
         source,
         destination,
@@ -31,6 +86,42 @@ const Home = () => {
     } catch (error) {
       setMessage('Error getting recommendations');
     }
+  };
+
+  const handleCardClick = async (rec) => {
+    const token = localStorage.getItem('token');
+    console.log('Attempting to save history...');
+
+    if (!parsedQuery) {
+      console.warn('Cannot save history: parsedQuery is not available.');
+      // Optionally, you could show a user-facing message here.
+      // Proceed with opening map even if history cannot be saved.
+    } else {
+      try {
+        const response = await HistoryService.saveHistory(query, parsedQuery, rec, token);
+        console.log('History saved response:', response.data);
+      } catch (error) {
+        console.error('Error saving history from frontend:', error.response ? error.response.data : error.message);
+      }
+    }
+
+    const travelModeMap = {
+      Cab: 'driving',
+      Auto: 'driving',
+      Bus: 'transit',
+      Train: 'transit',
+      Walking: 'walking',
+      Bicycling: 'bicycling',
+      Flight: 'transit', // Google Maps does not have a 'flying' travel mode, defaulting to transit.
+    };
+
+    const travelMode = travelModeMap[rec.mode] || 'driving';
+    const url = `https://www.google.com/maps/dir/?api=1&origin=${encodeURIComponent(source)}&destination=${encodeURIComponent(destination)}&travelmode=${travelMode}`;
+    window.open(url, '_blank');
+  };
+
+  const handleCardSelect = (rec) => {
+    setSelectedCard(rec.mode === selectedCard ? null : rec.mode);
   };
 
   return (
@@ -44,6 +135,13 @@ const Home = () => {
             onChange={(e) => setQuery(e.target.value)}
             placeholder="e.g. From Delhi to Jaipur, budget friendly"
           />
+          <button
+            type="button"
+            onClick={isRecording ? stopRecording : startRecording}
+            className={`btn btn-secondary ${isRecording ? 'recording' : ''}`}
+          >
+            {isRecording ? 'Stop Recording' : 'Start Recording'}
+          </button>
           <div className="actions">
             <button type="submit" className="btn btn-primary">Get Recommendations</button>
           </div>
@@ -53,12 +151,20 @@ const Home = () => {
 
       <div className="grid cols-2">
         {recommendations.map((rec) => (
-          <div key={rec.mode} className="card">
+          <div key={rec.mode} className="card cursor-pointer hover:shadow-lg" onClick={() => handleCardSelect(rec)}>
             <h3>{rec.mode}</h3>
-            <p>Cost: {rec.cost}</p>
-            <p>Time: {rec.time}</p>
-            <p>Comfort: {rec.comfort}</p>
-            <p>Description: {rec.ai_description}</p>
+            {selectedCard === rec.mode ? (
+              <div>
+                <button className="btn btn-secondary" onClick={() => handleCardClick(rec)}>View on Map</button>
+              </div>
+            ) : (
+              <>
+                <p>Cost: {rec.cost}</p>
+                <p>Time: {rec.time}</p>
+                <p>Comfort: {rec.comfort}</p>
+                <p>Description: {rec.ai_description}</p>
+              </>
+            )}
           </div>
         ))}
       </div>

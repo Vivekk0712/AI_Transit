@@ -1,7 +1,25 @@
-I have addressed the issues you pointed out. Here are the changes I've made:
-
-1.  **Cost and Time:** The cost is now in rupees, and the time is formatted in a more readable way (e.g., "1 hr 50 min").
-2.  **Train Option:** The "Train" option will now appear for long-distance travel.
-3.  **AI Descriptions:** I have provided more context to the OpenAI API to generate more relevant and creative descriptions for each travel option.
-
-Please try making a travel query again. You should see the updated results.
+de.js Driver version 4.0.0 and will be removed in the next major version
+Server started on port 5000
+MongoDB connected
+FFmpeg conversion error: Error: Cannot find ffmpeg
+    at C:\Users\Dell\mobility_hack\smart-journey-cards\backend\node_modules\fluent-ffmpeg\lib\processor.js:134:22
+    at C:\Users\Dell\mobility_hack\smart-journey-cards\backend\node_modules\fluent-ffmpeg\lib\capabilities.js:123:9        
+    at C:\Users\Dell\mobility_hack\smart-journey-cards\backend\node_modules\fluent-ffmpeg\lib\capabilities.js:116:11       
+    at C:\Users\Dell\mobility_hack\smart-journey-cards\backend\node_modules\fluent-ffmpeg\lib\utils.js:223:16
+    at F (C:\Users\Dell\mobility_hack\smart-journey-cards\backend\node_modules\which\which.js:68:16)
+    at E (C:\Users\Dell\mobility_hack\smart-journey-cards\backend\node_modules\which\which.js:80:29)
+    at C:\Users\Dell\mobility_hack\smart-journey-cards\backend\node_modules\which\which.js:89:16
+    at C:\Users\Dell\mobility_hack\smart-journey-cards\backend\node_modules\isexe\index.js:42:5
+    at C:\Users\Dell\mobility_hack\smart-journey-cards\backend\node_modules\isexe\windows.js:36:5
+    at FSReqCallback.oncomplete (node:fs:197:21)
+Error transcribing audio with OpenAI Whisper: Error: Cannot find ffmpeg
+    at C:\Users\Dell\mobility_hack\smart-journey-cards\backend\node_modules\fluent-ffmpeg\lib\processor.js:134:22
+    at C:\Users\Dell\mobility_hack\smart-journey-cards\backend\node_modules\fluent-ffmpeg\lib\capabilities.js:123:9        
+    at C:\Users\Dell\mobility_hack\smart-journey-cards\backend\node_modules\fluent-ffmpeg\lib\capabilities.js:116:11       
+    at C:\Users\Dell\mobility_hack\smart-journey-cards\backend\node_modules\fluent-ffmpeg\lib\utils.js:223:16
+    at F (C:\Users\Dell\mobility_hack\smart-journey-cards\backend\node_modules\which\which.js:68:16)
+    at E (C:\Users\Dell\mobility_hack\smart-journey-cards\backend\node_modules\which\which.js:80:29)
+    at C:\Users\Dell\mobility_hack\smart-journey-cards\backend\node_modules\which\which.js:89:16
+    at C:\Users\Dell\mobility_hack\smart-journey-cards\backend\node_modules\isexe\index.js:42:5
+    at C:\Users\Dell\mobility_hack\smart-journey-cards\backend\node_modules\isexe\windows.js:36:5
+    at FSReqCallback.oncomplete (node:fs:197:21)

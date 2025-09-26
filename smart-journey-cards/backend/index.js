@@ -6,6 +6,14 @@ require('dotenv').config();
 
 const app = express();
 
+// Create uploads directory if it doesn't exist
+const fs = require('fs');
+const path = require('path');
+const uploadsDir = path.join(__dirname, 'uploads');
+if (!fs.existsSync(uploadsDir)) {
+  fs.mkdirSync(uploadsDir);
+}
+
 // Connect to database
 connectDB();
 
@@ -17,6 +25,7 @@ app.use(express.json());
 app.use('/api/auth', require('./routes/auth'));
 app.use('/api/travel', require('./routes/travel'));
 app.use('/api/history', require('./routes/history'));
+app.use('/api/speech', require('./routes/speech'));
 
 const PORT = process.env.PORT || 5000;
 

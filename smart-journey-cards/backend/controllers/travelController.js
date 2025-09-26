@@ -5,6 +5,15 @@ require('dotenv').config();
 
 const openai_api = new openai({ apiKey: process.env.OPENAI_API_KEY });
 
+// Cost model parameters
+const costModel = {
+  bus: { baseFare: 20, perKm: 1.5 },
+  auto: { baseFare: 40, perKm: 8 },
+  cab: { baseFare: 60, perKm: 12, surgeMultiplier: 1.2 },
+  train: { baseFare: 30, perKm: 1 },
+  flight: { baseFare: 3000, perKm: 5 },
+};
+
 // Function to calculate distance between two coordinates (Haversine formula)
 const getDistance = (lat1, lon1, lat2, lon2) => {
   const R = 6371; // Radius of the earth in km
@@ -73,13 +82,17 @@ exports.recommend = async (req, res) => {
 
     // Estimate travel options
     const options = [
-      { mode: 'Bus', cost: `₹${Math.round(distance * 1.5)}`, time: formatTime(distance * 5), comfort: 2 },
-      { mode: 'Auto', cost: `₹${Math.round(distance * 5)}`, time: formatTime(distance * 3), comfort: 3 },
-      { mode: 'Cab', cost: `₹${Math.round(distance * 10)}`, time: formatTime(distance * 2), comfort: 5 },
+      { mode: 'Bus', cost: `₹${Math.round(costModel.bus.baseFare + distance * costModel.bus.perKm)}`, time: formatTime(distance * 5), comfort: 2 },
+      { mode: 'Auto', cost: `₹${Math.round(costModel.auto.baseFare + distance * costModel.auto.perKm)}`, time: formatTime(distance * 3), comfort: 3 },
+      { mode: 'Cab', cost: `₹${Math.round((costModel.cab.baseFare + distance * costModel.cab.perKm) * costModel.cab.surgeMultiplier)}`, time: formatTime(distance * 2), comfort: 5 },
     ];
 
-    if (distance > 100) { // Only add train option for long distances
-        options.push({ mode: 'Train', cost: `₹${Math.round(distance * 0.8)}`, time: formatTime(distance * 1.5), comfort: 4 })
+    if (distance > 20) { // Only add train option for long distances
+        options.push({ mode: 'Train', cost: `₹${Math.round(costModel.train.baseFare + distance * costModel.train.perKm)}`, time: formatTime(distance * 1.5), comfort: 4 })
+    }
+
+    if (distance > 500) { // Only add flight option for very long distances
+        options.push({ mode: 'Flight', cost: `₹${Math.round(costModel.flight.baseFare + distance * costModel.flight.perKm)}`, time: formatTime(distance * 0.2), comfort: 4 })
     }
 
     // Add AI descriptions
@@ -101,15 +114,16 @@ exports.recommend = async (req, res) => {
     }
 
     // Sort options based on intent
-    if (intent === 'cheapest') {
+    const lowerCaseIntent = intent.toLowerCase();
+    if (lowerCaseIntent.includes('cheap')) {
       options.sort((a, b) => parseFloat(a.cost.substring(1)) - parseFloat(b.cost.substring(1)));
-    } else if (intent === 'fastest') {
+    } else if (lowerCaseIntent.includes('fast')) {
         options.sort((a, b) => {
             const timeA = a.time.includes('hr') ? parseInt(a.time.split('hr')[0]) * 60 + parseInt(a.time.split('hr')[1].split('min')[0]) : parseInt(a.time.split('min')[0]);
             const timeB = b.time.includes('hr') ? parseInt(b.time.split('hr')[0]) * 60 + parseInt(b.time.split('hr')[1].split('min')[0]) : parseInt(b.time.split('min')[0]);
             return timeA - timeB;
         });
-    } else if (intent === 'comfortable') {
+    } else if (lowerCaseIntent.includes('comfort')) {
       options.sort((a, b) => b.comfort - a.comfort);
     }
 
