@@ -1,10 +1,7 @@
-I have updated the backend to provide a more realistic experience. Here's what I've changed:
+I have addressed the issues you pointed out. Here are the changes I've made:
 
-- The `recommend` function now uses the Nominatim API to get the coordinates of the source and destination.
-- It then calculates the distance between the two points.
-- Based on the distance, it estimates the cost and time for different modes of transport (Bus, Auto, Cab).
-- Finally, it uses the OpenAI API to generate a friendly AI description for each travel option.
+1.  **Cost and Time:** The cost is now in rupees, and the time is formatted in a more readable way (e.g., "1 hr 50 min").
+2.  **Train Option:** The "Train" option will now appear for long-distance travel.
+3.  **AI Descriptions:** I have provided more context to the OpenAI API to generate more relevant and creative descriptions for each travel option.
 
-This removes the hardcoded mock data and provides a more dynamic and realistic implementation based on the stories in `stories.md`.
-
-Please try making a travel query again. You should now get back a list of travel options with AI-generated descriptions.
+Please try making a travel query again. You should see the updated results.

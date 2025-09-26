@@ -53,6 +53,7 @@ const Home = () => {
             <p>Cost: {rec.cost}</p>
             <p>Time: {rec.time}</p>
             <p>Comfort: {rec.comfort}</p>
+            <p>Description: {rec.ai_description}</p>
           </div>
         ))}
       </div>
