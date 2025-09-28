@@ -21,6 +21,18 @@ connectDB();
 app.use(cors());
 app.use(express.json());
 
+// Debug logging middleware
+app.use((req, res, next) => {
+  console.log(`${new Date().toISOString()} - ${req.method} ${req.path}`);
+  if (req.body && Object.keys(req.body).length > 0) {
+    console.log('Request body:', req.body);
+  }
+  if (req.headers['x-auth-token']) {
+    console.log('Auth token present:', req.headers['x-auth-token'].substring(0, 20) + '...');
+  }
+  next();
+});
+
 // Routes
 app.use('/api/auth', require('./routes/auth'));
 app.use('/api/travel', require('./routes/travel'));

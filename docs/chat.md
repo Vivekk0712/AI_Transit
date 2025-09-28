@@ -1,25 +1,24 @@
-de.js Driver version 4.0.0 and will be removed in the next major version
-Server started on port 5000
-MongoDB connected
-FFmpeg conversion error: Error: Cannot find ffmpeg
-    at C:\Users\Dell\mobility_hack\smart-journey-cards\backend\node_modules\fluent-ffmpeg\lib\processor.js:134:22
-    at C:\Users\Dell\mobility_hack\smart-journey-cards\backend\node_modules\fluent-ffmpeg\lib\capabilities.js:123:9        
-    at C:\Users\Dell\mobility_hack\smart-journey-cards\backend\node_modules\fluent-ffmpeg\lib\capabilities.js:116:11       
-    at C:\Users\Dell\mobility_hack\smart-journey-cards\backend\node_modules\fluent-ffmpeg\lib\utils.js:223:16
-    at F (C:\Users\Dell\mobility_hack\smart-journey-cards\backend\node_modules\which\which.js:68:16)
-    at E (C:\Users\Dell\mobility_hack\smart-journey-cards\backend\node_modules\which\which.js:80:29)
-    at C:\Users\Dell\mobility_hack\smart-journey-cards\backend\node_modules\which\which.js:89:16
-    at C:\Users\Dell\mobility_hack\smart-journey-cards\backend\node_modules\isexe\index.js:42:5
-    at C:\Users\Dell\mobility_hack\smart-journey-cards\backend\node_modules\isexe\windows.js:36:5
-    at FSReqCallback.oncomplete (node:fs:197:21)
-Error transcribing audio with OpenAI Whisper: Error: Cannot find ffmpeg
-    at C:\Users\Dell\mobility_hack\smart-journey-cards\backend\node_modules\fluent-ffmpeg\lib\processor.js:134:22
-    at C:\Users\Dell\mobility_hack\smart-journey-cards\backend\node_modules\fluent-ffmpeg\lib\capabilities.js:123:9        
-    at C:\Users\Dell\mobility_hack\smart-journey-cards\backend\node_modules\fluent-ffmpeg\lib\capabilities.js:116:11       
-    at C:\Users\Dell\mobility_hack\smart-journey-cards\backend\node_modules\fluent-ffmpeg\lib\utils.js:223:16
-    at F (C:\Users\Dell\mobility_hack\smart-journey-cards\backend\node_modules\which\which.js:68:16)
-    at E (C:\Users\Dell\mobility_hack\smart-journey-cards\backend\node_modules\which\which.js:80:29)
-    at C:\Users\Dell\mobility_hack\smart-journey-cards\backend\node_modules\which\which.js:89:16
-    at C:\Users\Dell\mobility_hack\smart-journey-cards\backend\node_modules\isexe\index.js:42:5
-    at C:\Users\Dell\mobility_hack\smart-journey-cards\backend\node_modules\isexe\windows.js:36:5
-    at FSReqCallback.oncomplete (node:fs:197:21)
+You can now view frontend in the browser.
+
+  Local:            http://localhost:3000
+  On Your Network:  http://172.22.32.1:3000
+
+Note that the development build is not optimized.
+To create a production build, use npm run build.
+
+webpack compiled successfully
+Compiling...
+Compiled with warnings.
+
+[eslint] 
+src\pages\History.js
+  Line 26:6:  React Hook useEffect has a missing dependency: 'history'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
+
+Search for the keywords to learn more about each warning.
+To ignore, add // eslint-disable-next-line to the line before.
+
+WARNING in [eslint] 
+src\pages\History.js
+  Line 26:6:  React Hook useEffect has a missing dependency: 'history'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
+
+webpack compiled with 1 warning

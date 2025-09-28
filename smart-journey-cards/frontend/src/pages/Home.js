@@ -88,8 +88,15 @@ const Home = () => {
     }
   };
 
-  const handleCardClick = async (rec) => {
+  const handleCardClick = async (rec, e) => {
+    e.stopPropagation(); // Prevent event bubbling
+    console.log('=== handleCardClick called ===');
+    console.log('rec:', rec);
+    console.log('parsedQuery:', parsedQuery);
+    console.log('query:', query);
+    
     const token = localStorage.getItem('token');
+    console.log('token exists:', !!token);
     console.log('Attempting to save history...');
 
     if (!parsedQuery) {
@@ -97,8 +104,24 @@ const Home = () => {
       // Optionally, you could show a user-facing message here.
       // Proceed with opening map even if history cannot be saved.
     } else {
+      // Test backend connectivity first
       try {
-        const response = await HistoryService.saveHistory(query, parsedQuery, rec, token);
+        console.log('Testing backend connectivity...');
+        const testResponse = await fetch('http://localhost:5000/api/history/test', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ test: 'data' })
+        });
+        const testData = await testResponse.json();
+        console.log('Backend test response:', testData);
+      } catch (testError) {
+        console.error('Backend connectivity test failed:', testError);
+      }
+      try {
+        const decodedToken = jwtDecode(token);
+        const userId = decodedToken.user.id;
+        console.log('Saving history with data:', { userId, query, parsedQuery, selectedOption: rec });
+        const response = await HistoryService.saveHistory(userId, query, parsedQuery, rec, token);
         console.log('History saved response:', response.data);
       } catch (error) {
         console.error('Error saving history from frontend:', error.response ? error.response.data : error.message);
@@ -144,6 +167,37 @@ const Home = () => {
           </button>
           <div className="actions">
             <button type="submit" className="btn btn-primary">Get Recommendations</button>
+            <button 
+              type="button" 
+              className="btn btn-secondary" 
+              onClick={async () => {
+                console.log('=== Manual Test Save ===');
+                const token = localStorage.getItem('token');
+                if (token) {
+                  try {
+                    const decodedToken = jwtDecode(token);
+                    const userId = decodedToken.user.id;
+                    const testData = {
+                      userId,
+                      text: 'Test query',
+                      parsedQuery: { source: 'Delhi', destination: 'Mumbai', intent: 'cheapest' },
+                      selectedOption: { mode: 'Bus', cost: '₹100', time: '2 hours' }
+                    };
+                    console.log('Test data:', testData);
+                    const response = await HistoryService.saveHistory(userId, 'Test query', testData.parsedQuery, testData.selectedOption, token);
+                    console.log('Test save response:', response);
+                    setMessage('Test save successful!');
+                  } catch (error) {
+                    console.error('Test save error:', error);
+                    setMessage('Test save failed: ' + error.message);
+                  }
+                } else {
+                  setMessage('No token found');
+                }
+              }}
+            >
+              Test Save
+            </button>
           </div>
         </form>
         {message && <p className="mt-2" style={{ color: '#ffb4b4' }}>{message}</p>}
@@ -155,7 +209,7 @@ const Home = () => {
             <h3>{rec.mode}</h3>
             {selectedCard === rec.mode ? (
               <div>
-                <button className="btn btn-secondary" onClick={() => handleCardClick(rec)}>View on Map</button>
+                <button className="btn btn-secondary" onClick={(e) => handleCardClick(rec, e)}>View on Map</button>
               </div>
             ) : (
               <>

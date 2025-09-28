@@ -2,19 +2,15 @@
 const History = require('../models/History');
 
 exports.saveHistory = async (req, res) => {
-  console.log('Received request to save history');
-  const { query, parsedQuery, selectedOption } = req.body;
+  const { text, parsedQuery, selectedOption } = req.body;
   const userId = req.user.id;
 
-  console.log('User ID:', userId);
-  console.log('Query:', query);
-  console.log('Parsed Query:', parsedQuery);
-  console.log('Selected Option:', selectedOption);
+  console.log('Save history request:', { userId, text, parsedQuery, selectedOption });
 
   try {
     const history = new History({
       userId,
-      query,
+      text,
       parsedQuery,
       selectedOption,
     });

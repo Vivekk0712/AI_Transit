@@ -6,7 +6,7 @@ const HistorySchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
   },
-  query: {
+  text: {
     type: String,
     required: true,
   },
